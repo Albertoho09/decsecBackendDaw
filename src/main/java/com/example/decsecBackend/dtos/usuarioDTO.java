@@ -1,29 +1,31 @@
 package com.example.decsecBackend.dtos;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.cglib.core.Local;
 
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 
 public class usuarioDTO {
-	
+
 	private String nick;
-	
+
 	private String nombre;
-	
+
 	private String apellidos;
-	
-    private String email;
 
-	private Date fechaNac;
-	
+	private String email;
+
+	private LocalDate fechaNac;
+
 	private int npublicaciones;
-	
-    private Set<Role> roles = new HashSet<>();
 
-    
+	private Set<Role> roles = new HashSet<>();
+
 	public usuarioDTO(Usuario usu) {
 		this.nick = usu.getNick();
 		this.nombre = usu.getNick();
@@ -34,26 +36,21 @@ public class usuarioDTO {
 		this.npublicaciones = 0;
 	}
 
-	
 	public int getNpublicaciones() {
 		return npublicaciones;
 	}
-
 
 	public void setNpublicaciones(int npublicaciones) {
 		this.npublicaciones = npublicaciones;
 	}
 
-
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
-
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-
 
 	public String getNick() {
 		return nick;
@@ -87,11 +84,11 @@ public class usuarioDTO {
 		this.email = email;
 	}
 
-	public Date getFechaNac() {
+	public LocalDate getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(Date fechaNac) {
+	public void setFechaNac(LocalDate fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 

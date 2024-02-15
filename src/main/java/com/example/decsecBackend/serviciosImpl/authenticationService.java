@@ -1,5 +1,8 @@
 package com.example.decsecBackend.serviciosImpl;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,25 +15,23 @@ import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.dtos.SignUpRequest;
 import com.example.decsecBackend.seguridad.JwtAuthenticationResponse;
-
-import com.example.decsecBackend.serviciosImpl.JwtServiceImpl;
-
 import lombok.Builder;
 
 @Builder
 @Service
 public class authenticationService {
-	@Autowired
-	private usuarioServicioImpl usuarioservicio;
+    @Autowired
+    private usuarioServicioImpl usuarioservicio;
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // Constructor para inyección de dependencias (si usas Spring)
     public authenticationService(usuarioServicioImpl servicio,
-                                     PasswordEncoder passwordEncoder,
-                                     JwtServiceImpl jwtService,
-                                     AuthenticationManager authenticationManager) {
+            PasswordEncoder passwordEncoder,
+            JwtServiceImpl jwtService,
+            AuthenticationManager authenticationManager) {
         this.usuarioservicio = servicio;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -38,7 +39,7 @@ public class authenticationService {
     }
 
     public JwtAuthenticationResponse signup(SignUpRequest request) {
-        if(usuarioservicio.existePorEmail(request.getEmail())) {
+        if (usuarioservicio.existePorEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email already in use.");
         }
         // Corrige la forma de construir el objeto 'User'
@@ -47,10 +48,10 @@ public class authenticationService {
         user.setNombre(request.getNombre());
         user.setApellidos(request.getApellidos());
         user.setEmail(request.getEmail());
-        user.setFechaNac(request.getFechaNac());
+        user.setFechaNac(LocalDate.parse(request.getFechaNac().toString(), formatter));
         if (request.getFotoperfil() != null) {
-			user.setFotoperfil(request.getFotoperfil());
-		}
+            user.setFotoperfil(request.getFotoperfil());
+        }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.getRoles().add(Role.ROLE_USER); // Asegúrate de que Role.USER esté definido correctamente
         usuarioservicio.crearUsuario(user);
@@ -58,13 +59,12 @@ public class authenticationService {
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
-
     public JwtAuthenticationResponse signin(SigninRequest request) {
         // Maneja la autenticación
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        
-       // SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Usuario user = usuarioservicio.encontrarPorEmail(request.getEmail());
         String jwt = jwtService.generateToken(user);

@@ -1,7 +1,7 @@
 package com.example.decsecBackend.modelo;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,46 +26,45 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Usuario  implements UserDetails{
+public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private String nick;
-	
-	private String nombre;
-	
-	private String apellidos;
-	
-	private Date fechaNac;
-	
-    private String password;
 
-    @Lob
-    private byte[] fotoperfil;
-    
-    @Column(unique = true)
-    private String email;
-	
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name="usuario_rol")
-    @Column(name ="RolesUsuario")
-    private Set<Role> roles = new HashSet<>();
-    
-    
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Publicacion> publicaciones;
+	private String nick;
+
+	private String nombre;
+
+	private String apellidos;
+
+	private LocalDate fechaNac;
+
+	private String password;
+
+	@Lob
+	private byte[] fotoperfil;
+
+	@Column(unique = true)
+	private String email;
+
+	@ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
+	@Enumerated(EnumType.STRING)
+	@CollectionTable(name = "usuario_rol")
+	@Column(name = "RolesUsuario")
+	private Set<Role> roles = new HashSet<>();
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Publicacion> publicaciones;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Cargar la colección de roles de manera temprana
-        roles.size(); // Esto carga la colección de roles
+		// Cargar la colección de roles de manera temprana
+		roles.size(); // Esto carga la colección de roles
 
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+		return roles.stream()
+				.map(role -> new SimpleGrantedAuthority(role.name()))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -136,11 +135,11 @@ public class Usuario  implements UserDetails{
 		this.apellidos = apellidos;
 	}
 
-	public Date getFechaNac() {
+	public LocalDate getFechaNac() {
 		return fechaNac;
 	}
 
-	public void setFechaNac(Date fechaNac) {
+	public void setFechaNac(LocalDate fechaNac) {
 		this.fechaNac = fechaNac;
 	}
 
