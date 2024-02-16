@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.decsecBackend.dtos.usuarioDTO;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.usuarioServicioImpl;
@@ -33,10 +34,17 @@ public class userController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> listarUsuarios(@AuthenticationPrincipal Usuario usuario) {
+	public ResponseEntity<?> listarUsuarios(@PathVariable(required = false) Long id,
+			@AuthenticationPrincipal Usuario usuario) {
 		if (usuario.getRoles().contains(Role.ROLE_USER)) {
+			if (id != null) {
+				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id));
+			}
 			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosDTO());
 		} else {
+			if (id != null) {
+				return ResponseEntity.ok(new usuarioDTO(usuarioservice.obtenerUsuario(id)));
+			}
 			return ResponseEntity.ok(usuarioservice.listarTodosUsuarios());
 		}
 	}
