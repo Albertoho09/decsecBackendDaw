@@ -18,17 +18,19 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import com.example.decsecBackend.serviciosImpl.usuarioServicioImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Autowired
-    usuarioServicioImpl userService;
+    private usuarioServicioImpl userService;
+    @Autowired
+    private JwtAuthenticationFilter filter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,8 +42,8 @@ public class SecurityConfiguration {
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .cors(Customizer.withDefaults()) // Configure CORS here with Customizer
-                .authenticationProvider(authenticationProvider());
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
