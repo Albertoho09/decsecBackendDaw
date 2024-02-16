@@ -11,19 +11,20 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Publicacion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Lob
-    private byte[] foto;
-    
-    @NotNull
-    private String comentarioUsuario;
-    
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+	@Lob
+	@NotNull
+	private byte[] foto;
+
+	@NotNull
+	private String comentarioUsuario;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id", nullable = false)
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -56,5 +57,5 @@ public class Publicacion {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-  
+
 }
