@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.decsecBackend.dtos.usuarioDTO;
+import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.usuarioRepositorio;
 import com.example.decsecBackend.servicios.usuarioServicio;
@@ -31,7 +32,7 @@ public class usuarioServicioImpl implements usuarioServicio {
 
 	@Override
 	public Usuario obtenerUsuario(Long id) {
-		return repositorio.findById(id).orElse(null);
+		return repositorio.findById(id).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
 	}
 
 	@SuppressWarnings("null")

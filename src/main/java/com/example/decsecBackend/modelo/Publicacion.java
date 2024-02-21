@@ -11,7 +11,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Builder.Default;
 
 @Entity
 @Data

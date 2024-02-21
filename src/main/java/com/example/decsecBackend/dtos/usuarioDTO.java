@@ -4,10 +4,19 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.serviciosImpl.publicacionServicioImpl;
 
+import lombok.Data;
+
+@Data
 public class usuarioDTO {
+
+	@Autowired
+	private publicacionServicioImpl servicioPublicacion;
 
 	private String nick;
 
@@ -30,63 +39,7 @@ public class usuarioDTO {
 		this.email = usu.getEmail();
 		this.fechaNac = usu.getFechaNac();
 		this.roles = usu.getRoles();
-		this.npublicaciones = 0;
-	}
-
-	public int getNpublicaciones() {
-		return npublicaciones;
-	}
-
-	public void setNpublicaciones(int npublicaciones) {
-		this.npublicaciones = npublicaciones;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	public String getNick() {
-		return nick;
-	}
-
-	public void setNick(String nick) {
-		this.nick = nick;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellidos() {
-		return apellidos;
-	}
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public LocalDate getFechaNac() {
-		return fechaNac;
-	}
-
-	public void setFechaNac(LocalDate fechaNac) {
-		this.fechaNac = fechaNac;
+		this.npublicaciones = servicioPublicacion.listarPublicacionesUsuario(usu.getEmail()).size();
 	}
 
 }

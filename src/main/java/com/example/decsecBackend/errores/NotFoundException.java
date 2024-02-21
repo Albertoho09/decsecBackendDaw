@@ -1,10 +1,10 @@
 package com.example.decsecBackend.errores;
 
-public class UserNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-	public UserNotFoundException(String message) {
+    public NotFoundException(String message) {
         super(message);
     }
 }
