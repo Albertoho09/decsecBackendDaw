@@ -12,10 +12,11 @@ import com.example.decsecBackend.modelo.Publicacion;
 public interface publicacionRepositorio extends JpaRepository<Publicacion, Long> {
 
     @Modifying
-    @Query("UPDATE publicacion p SET p.megusta = p.megusta + 1 WHERE p.id = :id")
-    Publicacion meGusta(@Param("id") Long id);
-
+    @Query("UPDATE Publicacion p SET p.megusta = p.megusta + 1 WHERE p.id = :id")
+    void meGusta(@Param("id") Long id);
+    
     @Modifying
-    @Query("UPDATE publicacion p SET p.megusta = p.megusta - 1 WHERE p.id = :id")
-    Publicacion noMeGusta(@Param("id") Long id);
+    @Query("UPDATE Publicacion p SET p.megusta = p.megusta - 1 WHERE p.id = :id")
+    void noMeGusta(@Param("id") Long id);
+    
 }

@@ -44,6 +44,8 @@ public class Usuario implements UserDetails {
 
 	private String password;
 
+	private Boolean privado;
+
 	@Lob
 	private byte[] fotoperfil;
 

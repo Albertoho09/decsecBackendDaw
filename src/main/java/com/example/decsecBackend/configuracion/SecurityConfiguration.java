@@ -7,6 +7,7 @@ import com.example.decsecBackend.modelo.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -38,6 +39,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/users**")
+                        .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
+                        .requestMatchers(HttpMethod.GET,"/api/v1/publicaciones/{email}")
+                        .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
+                        .requestMatchers(HttpMethod.POST,"/api/v1/publicaciones")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

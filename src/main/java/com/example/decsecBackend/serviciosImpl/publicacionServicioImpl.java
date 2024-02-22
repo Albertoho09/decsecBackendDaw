@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Publicacion;
+import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.publicacionRepositorio;
 import com.example.decsecBackend.servicios.publicacionServicio;
 
@@ -81,13 +82,24 @@ public class publicacionServicioImpl implements publicacionServicio {
     }
 
     @Override
-    public Publicacion megusta(Long id) {
-        return repositorioPublicacion.meGusta(id);
+    public void megusta(Long id) {
+        repositorioPublicacion.meGusta(id);
     }
 
     @Override
-    public Publicacion noMegusta(Long id) {
-        return repositorioPublicacion.noMeGusta(id);
+    public void noMegusta(Long id) {
+        repositorioPublicacion.noMeGusta(id);
     }
+
+    @Override
+    public Boolean pertenecePublicacion(Long id, String email) {
+        
+        List<Publicacion> publicaciones = servicioUsuario.encontrarPorEmail(email).getPublicaciones();
+
+        return publicaciones.stream()
+        .anyMatch(objeto -> objeto.getId() == id);
+
+    }
+    
 
 }

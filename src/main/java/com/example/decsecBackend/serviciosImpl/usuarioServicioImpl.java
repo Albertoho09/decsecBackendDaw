@@ -109,10 +109,25 @@ public class usuarioServicioImpl implements usuarioServicio {
 				case "fotoperfil":
 					usu.setFotoperfil(valor.toString().getBytes());
 					break;
+				case "privado":
+					usu.setPrivado((valor instanceof Boolean) ? (Boolean) valor : false);
+					break;
 			}
 		});
 
 		return crearUsuario(usu);
+	}
+
+	@Override
+	public Boolean usuarioPrivado(String email) {
+		Usuario usu = repositorio.findByEmail(email)
+		.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+
+		if (usu.getPrivado()) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

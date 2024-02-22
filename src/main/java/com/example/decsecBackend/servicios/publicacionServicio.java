@@ -23,8 +23,10 @@ public interface publicacionServicio {
 
     Boolean existePorId(Long id);
 
-    Publicacion megusta(Long id);
+    void megusta(Long id);
 
-    Publicacion noMegusta(Long id);
+    void noMegusta(Long id);
+
+    Boolean pertenecePublicacion(Long id, String email);
 
 }

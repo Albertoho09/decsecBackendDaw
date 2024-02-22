@@ -28,4 +28,6 @@ public interface usuarioServicio {
 	Usuario encontrarPorEmail(String email);
 
 	Usuario actualizarUsuario(Long id, Map<String, Object> updates);
+
+	Boolean usuarioPrivado(String email);
 }
