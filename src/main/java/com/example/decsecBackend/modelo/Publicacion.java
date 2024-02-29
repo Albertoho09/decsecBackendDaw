@@ -20,7 +20,6 @@ public class Publicacion {
 	private Long id;
 
 	@Lob
-	@NotNull
 	private byte[] foto;
 
 	@NotNull

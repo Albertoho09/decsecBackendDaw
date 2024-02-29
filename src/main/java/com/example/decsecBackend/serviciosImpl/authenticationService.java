@@ -19,16 +19,16 @@ import lombok.Builder;
 
 @Builder
 @Service
-public class authenticationService {
+public class AuthenticationService {
     @Autowired
-    private usuarioServicioImpl usuarioservicio;
+    private UsuarioServicioImpl usuarioservicio;
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // Constructor para inyección de dependencias (si usas Spring)
-    public authenticationService(usuarioServicioImpl servicio,
+    public AuthenticationService(UsuarioServicioImpl servicio,
             PasswordEncoder passwordEncoder,
             JwtServiceImpl jwtService,
             AuthenticationManager authenticationManager) {

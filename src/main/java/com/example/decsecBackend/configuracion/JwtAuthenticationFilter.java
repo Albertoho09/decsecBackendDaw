@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.decsecBackend.serviciosImpl.JwtServiceImpl;
-import com.example.decsecBackend.serviciosImpl.usuarioServicioImpl;
+import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtServiceImpl jwtService;
     @Autowired
-    private usuarioServicioImpl userService;
+    private UsuarioServicioImpl userService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,

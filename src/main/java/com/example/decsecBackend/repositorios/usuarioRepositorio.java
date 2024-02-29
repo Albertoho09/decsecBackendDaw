@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.decsecBackend.modelo.Usuario;
 
 @Repository
-public interface usuarioRepositorio extends JpaRepository<Usuario, Long> {
+public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByEmail(String email);
 
     Optional<Usuario> findById(Long id);

@@ -8,17 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Publicacion;
-import com.example.decsecBackend.modelo.Usuario;
-import com.example.decsecBackend.repositorios.publicacionRepositorio;
-import com.example.decsecBackend.servicios.publicacionServicio;
+import com.example.decsecBackend.repositorios.PublicacionRepositorio;
+import com.example.decsecBackend.servicios.PublicacionServicio;
 
 @Service
-public class publicacionServicioImpl implements publicacionServicio {
+public class PublicacionServicioImpl implements PublicacionServicio {
 
     @Autowired
-    private publicacionRepositorio repositorioPublicacion;
+    private PublicacionRepositorio repositorioPublicacion;
     @Autowired
-    private usuarioServicioImpl servicioUsuario;
+    private UsuarioServicioImpl servicioUsuario;
 
     @SuppressWarnings("null")
     @Override
@@ -93,13 +92,12 @@ public class publicacionServicioImpl implements publicacionServicio {
 
     @Override
     public Boolean pertenecePublicacion(Long id, String email) {
-        
+
         List<Publicacion> publicaciones = servicioUsuario.encontrarPorEmail(email).getPublicaciones();
 
         return publicaciones.stream()
-        .anyMatch(objeto -> objeto.getId() == id);
+                .anyMatch(objeto -> objeto.getId() == id);
 
     }
-    
 
 }

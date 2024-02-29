@@ -22,13 +22,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import com.example.decsecBackend.serviciosImpl.usuarioServicioImpl;
+import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Autowired
-    private usuarioServicioImpl userService;
+    private UsuarioServicioImpl userService;
     @Autowired
     private JwtAuthenticationFilter filter;
 
@@ -40,9 +40,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/users**")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
-                        .requestMatchers(HttpMethod.GET,"/api/v1/publicaciones/{email}")
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/publicaciones/{email}")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
-                        .requestMatchers(HttpMethod.POST,"/api/v1/publicaciones")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/publicaciones")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

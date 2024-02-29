@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.decsecBackend.dtos.usuarioDTO;
+import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
-import com.example.decsecBackend.serviciosImpl.usuarioServicioImpl;
+import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class userController {
+public class UserController {
 
 	// private static final Logger logger =
 	// LoggerFactory.getLogger(userController.class);
 
 	@Autowired
-	private usuarioServicioImpl usuarioservice;
+	private UsuarioServicioImpl usuarioservice;
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
@@ -43,7 +43,7 @@ public class userController {
 			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosDTO());
 		} else {
 			if (id != null) {
-				return ResponseEntity.ok(new usuarioDTO(usuarioservice.obtenerUsuario(id)));
+				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.obtenerUsuario(id)));
 			}
 			return ResponseEntity.ok(usuarioservice.listarTodosUsuarios());
 		}

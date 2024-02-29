@@ -12,17 +12,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.decsecBackend.dtos.usuarioDTO;
+import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Usuario;
-import com.example.decsecBackend.repositorios.usuarioRepositorio;
-import com.example.decsecBackend.servicios.usuarioServicio;
+import com.example.decsecBackend.repositorios.UsuarioRepositorio;
+import com.example.decsecBackend.servicios.UsuarioServicio;
 
 @Service
-public class usuarioServicioImpl implements usuarioServicio {
+public class UsuarioServicioImpl implements UsuarioServicio {
 
 	@Autowired
-	private usuarioRepositorio repositorio;
+	private UsuarioRepositorio repositorio;
 
 	@SuppressWarnings("null")
 	@Override
@@ -53,9 +53,9 @@ public class usuarioServicioImpl implements usuarioServicio {
 	}
 
 	@Override
-	public List<usuarioDTO> listarTodosUsuariosDTO() {
+	public List<UsuarioDTO> listarTodosUsuariosDTO() {
 		return repositorio.findAll().stream()
-				.map(usuario -> new usuarioDTO(usuario))
+				.map(usuario -> new UsuarioDTO(usuario))
 				.collect(Collectors.toList());
 	}
 
@@ -121,11 +121,11 @@ public class usuarioServicioImpl implements usuarioServicio {
 	@Override
 	public Boolean usuarioPrivado(String email) {
 		Usuario usu = repositorio.findByEmail(email)
-		.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+				.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
 
 		if (usu.getPrivado()) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

@@ -10,17 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.decsecBackend.dtos.*;
 import com.example.decsecBackend.seguridad.JwtAuthenticationResponse;
-import com.example.decsecBackend.serviciosImpl.authenticationService;
+import com.example.decsecBackend.serviciosImpl.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin // Esto permite el acceso CORS de cualquier origen a todos los endpoints en este controlador
+@CrossOrigin // Esto permite el acceso CORS de cualquier origen a todos los endpoints en este
+             // controlador
 public class AuthenticationController {
-	@Autowired
-    authenticationService authenticationService;
+    @Autowired
+    AuthenticationService authenticationService;
+
     @PostMapping("/signup")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
         return ResponseEntity.ok(authenticationService.signup(request));

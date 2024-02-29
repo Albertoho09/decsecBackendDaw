@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.example.decsecBackend.dtos.usuarioDTO;
+import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.modelo.Usuario;
 
-public interface usuarioServicio {
-	List<usuarioDTO> listarTodosUsuariosDTO();
+public interface UsuarioServicio {
+	List<UsuarioDTO> listarTodosUsuariosDTO();
 
 	List<Usuario> listarTodosUsuarios();
 

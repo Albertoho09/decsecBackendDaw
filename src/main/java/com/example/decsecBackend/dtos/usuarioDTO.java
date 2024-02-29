@@ -4,19 +4,13 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
-import com.example.decsecBackend.serviciosImpl.publicacionServicioImpl;
 
 import lombok.Data;
 
 @Data
-public class usuarioDTO {
-
-	@Autowired
-	private publicacionServicioImpl servicioPublicacion;
+public class UsuarioDTO {
 
 	private String nick;
 
@@ -32,14 +26,14 @@ public class usuarioDTO {
 
 	private Set<Role> roles = new HashSet<>();
 
-	public usuarioDTO(Usuario usu) {
+	public UsuarioDTO(Usuario usu) {
 		this.nick = usu.getNick();
 		this.nombre = usu.getNick();
 		this.apellidos = usu.getApellidos();
 		this.email = usu.getEmail();
 		this.fechaNac = usu.getFechaNac();
 		this.roles = usu.getRoles();
-		this.npublicaciones = servicioPublicacion.listarPublicacionesUsuario(usu.getEmail()).size();
+		this.npublicaciones = usu.getPublicaciones().size();
 	}
 
 }

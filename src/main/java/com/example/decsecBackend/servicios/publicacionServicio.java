@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.example.decsecBackend.modelo.Publicacion;
 
-public interface publicacionServicio {
+public interface PublicacionServicio {
 
     Publicacion crearPublicacion(Publicacion publicacion);
 
