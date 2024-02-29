@@ -2,6 +2,9 @@ package com.example.decsecBackend.modelo;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +34,7 @@ public class Publicacion {
 
 	@ManyToOne
 	@JoinColumn(name = "usuario_id", nullable = false)
+	@JsonManagedReference
 	private Usuario usuario;
 
 }

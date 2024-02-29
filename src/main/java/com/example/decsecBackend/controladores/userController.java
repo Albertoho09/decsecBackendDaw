@@ -36,6 +36,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> listarUsuarios(@PathVariable(required = false) Long id,
 			@AuthenticationPrincipal Usuario usuario) {
+
 		if (usuario.getRoles().contains(Role.ROLE_USER)) {
 			if (id != null) {
 				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id));
