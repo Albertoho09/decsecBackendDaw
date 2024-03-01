@@ -38,6 +38,14 @@ public class InicializarDatos implements CommandLineRunner {
 
             usuarioservicio.crearUsuario(usu1);
 
+            Publicacion publi1 = new Publicacion();
+            publi1.setFechaPublicacion(LocalDate.now());
+            publi1.setComentarioUsuario("Foto de Andres 1");
+
+            Publicacion publi2 = new Publicacion();
+            publi2.setFechaPublicacion(LocalDate.now());
+            publi2.setComentarioUsuario("Foto de Andres 2");
+
             Usuario usu2 = new Usuario();
             usu2.setNick("Revived");
             usu2.setNombre("Andrés");
@@ -47,7 +55,22 @@ public class InicializarDatos implements CommandLineRunner {
             usu2.setPassword(passwordEncoder.encode("tomate"));
             usu2.setPrivado(false);
             usu2.getRoles().add(Role.ROLE_USER);
+
+            publi1.setUsuario(usu2);
+            publi2.setUsuario(usu2);
+
+            usu2.asignarPublicacion(publi1);
+            usu2.asignarPublicacion(publi2);
+
             usuarioservicio.crearUsuario(usu2);
+
+            Publicacion publi3 = new Publicacion();
+            publi3.setFechaPublicacion(LocalDate.now());
+            publi3.setComentarioUsuario("Foto de Ana 1");
+
+            Publicacion publi4 = new Publicacion();
+            publi4.setFechaPublicacion(LocalDate.now());
+            publi4.setComentarioUsuario("Foto de Ana 2");
 
             Usuario usu3 = new Usuario();
             usu3.setNick("Melva");
@@ -58,38 +81,17 @@ public class InicializarDatos implements CommandLineRunner {
             usu3.setPassword(passwordEncoder.encode("tomate"));
             usu3.setPrivado(true);
             usu3.getRoles().add(Role.ROLE_USER);
-            usuarioservicio.crearUsuario(usu3);
-
-            Publicacion publi1 = new Publicacion();
-            publi1.setFechaPublicacion(LocalDate.now());
-            publi1.setComentarioUsuario("Foto de Andres 1");
-
-            Publicacion publi2 = new Publicacion();
-            publi2.setFechaPublicacion(LocalDate.now());
-            publi2.setComentarioUsuario("Foto de Andres 2");
-
-            publi1.setUsuario(usu2);
-            publi2.setUsuario(usu2);
-
-            publicacionservicio.crearPublicacion(publi1);
-            publicacionservicio.crearPublicacion(publi2);
-
-            Publicacion publi3 = new Publicacion();
-            publi3.setFechaPublicacion(LocalDate.now());
-            publi3.setComentarioUsuario("Foto de Ana 1");
-
-            Publicacion publi4 = new Publicacion();
-            publi4.setFechaPublicacion(LocalDate.now());
-            publi4.setComentarioUsuario("Foto de Ana 2");
 
             publi3.setUsuario(usu3);
             publi4.setUsuario(usu3);
 
-            publicacionservicio.crearPublicacion(publi3);
-            publicacionservicio.crearPublicacion(publi4);
+            usu3.asignarPublicacion(publi3);
+            usu3.asignarPublicacion(publi4);
+
+            usuarioservicio.crearUsuario(usu3);
 
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 }

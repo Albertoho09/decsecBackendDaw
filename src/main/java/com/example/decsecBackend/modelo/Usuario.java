@@ -1,6 +1,7 @@
 package com.example.decsecBackend.modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -61,8 +62,9 @@ public class Usuario implements UserDetails {
 	private Set<Role> roles = new HashSet<>();
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ElementCollection(fetch = FetchType.LAZY, targetClass = Publicacion.class)
 	@JsonBackReference
-	private List<Publicacion> publicaciones;
+	private List<Publicacion> publicaciones = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -108,6 +110,10 @@ public class Usuario implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public void asignarPublicacion(Publicacion publi) {
+		this.publicaciones.add(publi);
 	}
 
 }

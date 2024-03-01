@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.decsecBackend.modelo.Publicacion;
@@ -34,9 +35,9 @@ public class PublicacionController {
     @Autowired
     private UsuarioServicioImpl usuarioService;
 
-    @GetMapping("/{email}")
+    @GetMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
-    public ResponseEntity<?> listarPublicaciones(@PathVariable(required = false) String email,
+    public ResponseEntity<?> listarPublicaciones(@RequestParam(required = false) String email,
             @AuthenticationPrincipal Usuario usuario) {
 
         if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {

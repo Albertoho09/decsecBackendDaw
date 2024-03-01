@@ -3,17 +3,18 @@ package com.example.decsecBackend.servicios;
 import java.util.List;
 import java.util.Map;
 
+import com.example.decsecBackend.dtos.PublicacionDTO;
 import com.example.decsecBackend.modelo.Publicacion;
 
 public interface PublicacionServicio {
 
     Publicacion crearPublicacion(Publicacion publicacion);
 
-    List<Publicacion> listarPublicaciones();
+    List<PublicacionDTO> listarPublicaciones();
 
-    List<Publicacion> listarPublicacionesUsuario(String email);
+    List<PublicacionDTO> listarPublicacionesUsuario(String email);
 
-    Publicacion listarPublicacionPorId(Long id);
+    PublicacionDTO listarPublicacionPorId(Long id);
 
     List<Publicacion> listarPublicacionesdFeed(Long id);
 

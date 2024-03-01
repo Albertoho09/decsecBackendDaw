@@ -2,10 +2,13 @@ package com.example.decsecBackend.serviciosImpl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.decsecBackend.dtos.PublicacionDTO;
+import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
@@ -26,20 +29,24 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     }
 
     @Override
-    public List<Publicacion> listarPublicaciones() {
-        return repositorioPublicacion.findAll();
+    public List<PublicacionDTO> listarPublicaciones() {
+        return repositorioPublicacion.findAll().stream()
+                .map(publicacion -> new PublicacionDTO(publicacion))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Publicacion> listarPublicacionesUsuario(String email) {
-        return servicioUsuario.encontrarPorEmail(email).getPublicaciones();
+    public List<PublicacionDTO> listarPublicacionesUsuario(String email) {
+        return servicioUsuario.encontrarPorEmail(email).getPublicaciones().stream()
+                .map(publicacion -> new PublicacionDTO(publicacion))
+                .collect(Collectors.toList());
     }
 
     @SuppressWarnings("null")
     @Override
-    public Publicacion listarPublicacionPorId(Long id) {
-        return repositorioPublicacion.findById(id)
-                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
+    public PublicacionDTO listarPublicacionPorId(Long id) {
+        return new PublicacionDTO(repositorioPublicacion.findById(id)
+                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada")));
     }
 
     @Override

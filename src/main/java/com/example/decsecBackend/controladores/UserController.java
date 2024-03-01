@@ -51,12 +51,12 @@ public class UserController {
 			if (usuarioservice.existePorId(id)) {
 				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id));
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:"+id+" no existe");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
 		} else {
 			if (usuarioservice.existePorId(id)) {
 				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.obtenerUsuario(id)));
 			}
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:"+id+" no existe");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
 		}
 	}
 
@@ -65,7 +65,8 @@ public class UserController {
 	public ResponseEntity<?> borrarMiUsuario(
 			@AuthenticationPrincipal Usuario usuario) {
 		usuarioservice.borrarUsuario(usuario.getId());
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body("Tu usuario con correo " + usuario.getEmail() + " ha sido eliminado");
 	}
 
 	@DeleteMapping("/{id}")
@@ -74,9 +75,9 @@ public class UserController {
 			@AuthenticationPrincipal Usuario usuario) {
 		if (usuarioservice.existePorId(id)) {
 			usuarioservice.borrarUsuario(id);
-			return ResponseEntity.status(HttpStatus.OK).build();
+			return ResponseEntity.status(HttpStatus.OK).body("Usuario con id:" + id + " borrado correctamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
 		}
 	}
 
@@ -85,10 +86,10 @@ public class UserController {
 	public ResponseEntity<?> actualizarParcialmenteOtroUsuario(@PathVariable(required = false) Long id,
 			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
 		if (usuarioservice.existePorId(id)) {
-			return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(usuario.getId(),
+			return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(id,
 					updates));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:" + id + " no existe");
 		}
 	}
 
