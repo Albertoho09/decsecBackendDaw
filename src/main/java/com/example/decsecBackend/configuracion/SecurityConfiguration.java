@@ -38,9 +38,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/users**")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users**")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
-
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users**")
+                        .hasAnyAuthority(Role.ROLE_ADMIN.toString())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users")
+                        .hasAnyAuthority(Role.ROLE_USER.toString())
+                        
                         .requestMatchers(HttpMethod.GET, "/api/v1/publicaciones/{email}")
                         .hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
                         .requestMatchers(HttpMethod.POST, "/api/v1/publicaciones")

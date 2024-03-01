@@ -34,62 +34,70 @@ public class UserController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> listarUsuarios(@PathVariable(required = false) Long id,
+	public ResponseEntity<?> listarUsuarios(
 			@AuthenticationPrincipal Usuario usuario) {
-
 		if (usuario.getRoles().contains(Role.ROLE_USER)) {
-			if (id != null) {
-				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id));
-			}
 			return ResponseEntity.ok(usuarioservice.listarTodosUsuariosDTO());
 		} else {
-			if (id != null) {
-				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.obtenerUsuario(id)));
-			}
 			return ResponseEntity.ok(usuarioservice.listarTodosUsuarios());
 		}
 	}
 
-	@DeleteMapping("/{id}")
+	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> borrarUsuario(@PathVariable(required = false) Long id,
+	public ResponseEntity<?> listarUsuariosPorId(@PathVariable Long id,
 			@AuthenticationPrincipal Usuario usuario) {
-		if (id != null) {
-			if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
-				if (usuarioservice.existePorId(id)) {
-					usuarioservice.borrarUsuario(id);
-					return ResponseEntity.status(HttpStatus.OK).build();
-				} else {
-					return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-				}
-			} else {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
+			if (usuarioservice.existePorId(id)) {
+				return ResponseEntity.ok(usuarioservice.obtenerUsuario(id));
 			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:"+id+" no existe");
 		} else {
-			usuarioservice.borrarUsuario(usuario.getId());
+			if (usuarioservice.existePorId(id)) {
+				return ResponseEntity.ok(new UsuarioDTO(usuarioservice.obtenerUsuario(id)));
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario con id:"+id+" no existe");
+		}
+	}
+
+	@DeleteMapping
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> borrarMiUsuario(
+			@AuthenticationPrincipal Usuario usuario) {
+		usuarioservice.borrarUsuario(usuario.getId());
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> borrarUsuarioPorId(@PathVariable Long id,
+			@AuthenticationPrincipal Usuario usuario) {
+		if (usuarioservice.existePorId(id)) {
+			usuarioservice.borrarUsuario(id);
 			return ResponseEntity.status(HttpStatus.OK).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
 	@PatchMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> actualizarParcialmente(@PathVariable(required = false) Long id,
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> actualizarParcialmenteOtroUsuario(@PathVariable(required = false) Long id,
 			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
-		if (id != null) {
-			if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
-				if (usuarioservice.existePorId(id)) {
-					return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(usuario.getId(),
-							updates));
-				} else {
-					return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-				}
-			} else {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-			}
-		} else {
+		if (usuarioservice.existePorId(id)) {
 			return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(usuario.getId(),
 					updates));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+	}
+
+	@PatchMapping
+	@PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> actualizarParcialmenteMiUsuario(
+			@AuthenticationPrincipal Usuario usuario, @RequestBody Map<String, Object> updates) {
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioservice.actualizarUsuario(usuario.getId(),
+				updates));
 	}
 
 }

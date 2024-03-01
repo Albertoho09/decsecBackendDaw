@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,6 +35,7 @@ public class Publicacion {
 	private LocalDate fechaPublicacion;
 
 	@ManyToOne
+	@ElementCollection(fetch = FetchType.LAZY, targetClass = Usuario.class)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	@JsonManagedReference
 	private Usuario usuario;
