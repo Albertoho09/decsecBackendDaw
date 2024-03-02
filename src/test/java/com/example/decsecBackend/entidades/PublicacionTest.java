@@ -22,7 +22,7 @@ class PublicacionTest {
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
-    
+
     @Test
     void testCrearPublicacion() {
         // Crear un usuario de prueba
@@ -64,7 +64,7 @@ class PublicacionTest {
         usuario.setFechaNac(LocalDate.of(1990, 1, 1));
         usuario.setPassword("password");
         usuario.setPrivado(false);
-        usuario.setEmail("testModificar@example.com");
+        usuario.setEmail("testNuevo@example.com");
 
         usuarioRepositorio.save(usuario);
 

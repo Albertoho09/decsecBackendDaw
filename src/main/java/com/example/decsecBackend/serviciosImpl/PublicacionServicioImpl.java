@@ -24,7 +24,6 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Autowired
     private UsuarioServicioImpl servicioUsuario;
 
-
     @SuppressWarnings("null")
     @Override
     public PublicacionDTO crearPublicacion(Map<String, Object> datos, String email) {
@@ -32,8 +31,6 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         Publicacion publicacion = new Publicacion();
         publicacion.setComentarioUsuario(datos.get("comentarioUsuario").toString());
         publicacion.setUsuario(usu);
-        usu.asignarPublicacion(publicacion);
-        servicioUsuario.crearUsuario(usu);
         return new PublicacionDTO(repositorioPublicacion.save(publicacion));
     }
 

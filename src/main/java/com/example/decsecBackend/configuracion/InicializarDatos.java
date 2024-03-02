@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.decsecBackend.modelo.Usuario;
+import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.serviciosImpl.PublicacionServicioImpl;
@@ -20,7 +21,7 @@ public class InicializarDatos implements CommandLineRunner {
     @Autowired
     private UsuarioServicioImpl usuarioservicio;
     @Autowired
-    private PublicacionServicioImpl publicacionservicio;
+    private PublicacionRepositorio publicacionRepositorio;
 
     @Override
     public void run(String... args) throws Exception {
@@ -59,10 +60,9 @@ public class InicializarDatos implements CommandLineRunner {
             publi1.setUsuario(usu2);
             publi2.setUsuario(usu2);
 
-            usu2.asignarPublicacion(publi1);
-            usu2.asignarPublicacion(publi2);
-
             usuarioservicio.crearUsuario(usu2);
+            publicacionRepositorio.save(publi1);
+            publicacionRepositorio.save(publi2);
 
             Publicacion publi3 = new Publicacion();
             publi3.setFechaPublicacion(LocalDate.now());
@@ -81,14 +81,13 @@ public class InicializarDatos implements CommandLineRunner {
             usu3.setPassword(passwordEncoder.encode("tomate"));
             usu3.setPrivado(true);
             usu3.getRoles().add(Role.ROLE_USER);
+            usuarioservicio.crearUsuario(usu3);
 
             publi3.setUsuario(usu3);
             publi4.setUsuario(usu3);
 
-            usu3.asignarPublicacion(publi3);
-            usu3.asignarPublicacion(publi4);
-
-            usuarioservicio.crearUsuario(usu3);
+            publicacionRepositorio.save(publi3);
+            publicacionRepositorio.save(publi4);
 
             Publicacion publi5 = new Publicacion();
             publi5.setFechaPublicacion(LocalDate.now());
@@ -115,19 +114,17 @@ public class InicializarDatos implements CommandLineRunner {
             usu4.setPassword(passwordEncoder.encode("cabeson"));
             usu4.setPrivado(false);
             usu4.getRoles().add(Role.ROLE_USER);
+            usuarioservicio.crearUsuario(usu4);
 
             publi5.setUsuario(usu4);
             publi6.setUsuario(usu4);
             publi7.setUsuario(usu4);
             publi8.setUsuario(usu4);
 
-            usu4.asignarPublicacion(publi5);
-            usu4.asignarPublicacion(publi6);
-            usu4.asignarPublicacion(publi7);
-            usu4.asignarPublicacion(publi8);
-
-            usuarioservicio.crearUsuario(usu4);
-
+            publicacionRepositorio.save(publi5);
+            publicacionRepositorio.save(publi6);
+            publicacionRepositorio.save(publi7);
+            publicacionRepositorio.save(publi8);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,11 +1,9 @@
 package com.example.decsecBackend.entidades;
 
-import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.UsuarioRepositorio;
 
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
