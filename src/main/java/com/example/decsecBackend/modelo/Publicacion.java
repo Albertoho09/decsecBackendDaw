@@ -2,6 +2,8 @@ package com.example.decsecBackend.modelo;
 
 import java.time.LocalDate;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,10 +34,10 @@ public class Publicacion {
 
 	private int megusta = 0;
 
-	private LocalDate fechaPublicacion;
+	private LocalDate fechaPublicacion = LocalDate.now();
 
 	@ManyToOne
-	@ElementCollection(fetch = FetchType.LAZY, targetClass = Usuario.class)
+	@ElementCollection(fetch = FetchType.EAGER, targetClass = Usuario.class)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	@JsonManagedReference
 	private Usuario usuario;

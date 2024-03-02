@@ -4,13 +4,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.decsecBackend.dtos.PublicacionDTO;
-import com.example.decsecBackend.dtos.UsuarioDTO;
 import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Publicacion;
+import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.servicios.PublicacionServicio;
 
@@ -22,10 +24,17 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Autowired
     private UsuarioServicioImpl servicioUsuario;
 
+
     @SuppressWarnings("null")
     @Override
-    public Publicacion crearPublicacion(Publicacion publicacion) {
-        return repositorioPublicacion.save(publicacion);
+    public PublicacionDTO crearPublicacion(Map<String, Object> datos, String email) {
+        Usuario usu = servicioUsuario.encontrarPorEmail(email);
+        Publicacion publicacion = new Publicacion();
+        publicacion.setComentarioUsuario(datos.get("comentarioUsuario").toString());
+        publicacion.setUsuario(usu);
+        usu.asignarPublicacion(publicacion);
+        servicioUsuario.crearUsuario(usu);
+        return new PublicacionDTO(repositorioPublicacion.save(publicacion));
     }
 
     @Override
@@ -62,7 +71,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     @SuppressWarnings("null")
     @Override
-    public Publicacion actualizarPublicacion(Long id, Map<String, Object> updates) {
+    public PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates) {
 
         Publicacion publi = repositorioPublicacion.findById(id)
                 .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
@@ -78,7 +87,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
             }
         });
 
-        return repositorioPublicacion.save(publi);
+        return new PublicacionDTO(repositorioPublicacion.save(publi));
     }
 
     @SuppressWarnings("null")

@@ -8,7 +8,7 @@ import com.example.decsecBackend.modelo.Publicacion;
 
 public interface PublicacionServicio {
 
-    Publicacion crearPublicacion(Publicacion publicacion);
+    PublicacionDTO crearPublicacion(Map<String, Object> datos, String email);
 
     List<PublicacionDTO> listarPublicaciones();
 
@@ -20,7 +20,7 @@ public interface PublicacionServicio {
 
     void borrarPublicacion(Long id);
 
-    Publicacion actualizarPublicacion(Long id, Map<String, Object> updates);
+    PublicacionDTO actualizarPublicacion(Long id, Map<String, Object> updates);
 
     Boolean existePorId(Long id);
 

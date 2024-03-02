@@ -2,6 +2,7 @@ package com.example.decsecBackend.controladores;
 
 import java.util.Map;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +54,7 @@ public class PublicacionController {
             if (email != null) {
                 if (usuarioService.usuarioPrivado(email)) {
                     logger.info("##### PUBLICACIONES NO DISPONIBLE USUARIO PRIVADO (USUARIO) #####");
-                    return ResponseEntity.status(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS)
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
                             .body("Publicaciones no disponibles, usuario privado.");
                 } else {
                     logger.info("##### LISTANDO PUBLICACIONES USUARIO (USUARIO) #####");
@@ -63,16 +65,16 @@ public class PublicacionController {
                 return ResponseEntity.ok(publicacionService.listarPublicacionesUsuario(usuario.getEmail()));
             }
         }
-
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> crearPublicacion(@RequestBody Publicacion publicacion) {
+    public ResponseEntity<?> crearPublicacion(@RequestBody Map<String, Object> datos, @AuthenticationPrincipal Usuario usuario) {
         try {
             logger.info("##### CREANDO PUBLICACION (USUARIO) #####");
-            return ResponseEntity.status(HttpStatus.CREATED).body(publicacionService.crearPublicacion(publicacion));
+            return ResponseEntity.status(HttpStatus.CREATED).body(publicacionService.crearPublicacion(datos, usuario.getEmail()));
         } catch (Exception e) {
+            e.printStackTrace();
             logger.info("##### CREACION DE PUBLICACION FALLIDO (USUARIO) #####");
             return ResponseEntity.badRequest().body("Faltan valores o estos son erroneos");
         }

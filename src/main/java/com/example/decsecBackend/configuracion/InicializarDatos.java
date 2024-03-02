@@ -90,6 +90,45 @@ public class InicializarDatos implements CommandLineRunner {
 
             usuarioservicio.crearUsuario(usu3);
 
+            Publicacion publi5 = new Publicacion();
+            publi5.setFechaPublicacion(LocalDate.now());
+            publi5.setComentarioUsuario("Foto de Antonio 1");
+
+            Publicacion publi6 = new Publicacion();
+            publi6.setFechaPublicacion(LocalDate.now());
+            publi6.setComentarioUsuario("Foto de Antonio 2");
+
+            Publicacion publi7 = new Publicacion();
+            publi7.setFechaPublicacion(LocalDate.now());
+            publi7.setComentarioUsuario("Foto de Antonio 3");
+
+            Publicacion publi8 = new Publicacion();
+            publi8.setFechaPublicacion(LocalDate.now());
+            publi8.setComentarioUsuario("Foto de Antonio 4");
+
+            Usuario usu4 = new Usuario();
+            usu4.setNick("Preaching");
+            usu4.setNombre("Antonio");
+            usu4.setApellidos("Perez");
+            usu4.setFechaNac(LocalDate.now());
+            usu4.setEmail("albertoho09@gmail.com");
+            usu4.setPassword(passwordEncoder.encode("cabeson"));
+            usu4.setPrivado(false);
+            usu4.getRoles().add(Role.ROLE_USER);
+
+            publi5.setUsuario(usu4);
+            publi6.setUsuario(usu4);
+            publi7.setUsuario(usu4);
+            publi8.setUsuario(usu4);
+
+            usu4.asignarPublicacion(publi5);
+            usu4.asignarPublicacion(publi6);
+            usu4.asignarPublicacion(publi7);
+            usu4.asignarPublicacion(publi8);
+
+            usuarioservicio.crearUsuario(usu4);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
