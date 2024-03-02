@@ -1,12 +1,16 @@
 package com.example.decsecBackend.modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -35,6 +40,11 @@ public class Publicacion {
 	private int megusta = 0;
 
 	private LocalDate fechaPublicacion = LocalDate.now();
+
+	@OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)
+	@JsonBackReference
+	private List<Comentario> comentarios = new ArrayList<>();
 
 	@ManyToOne
 	@ElementCollection(fetch = FetchType.EAGER, targetClass = Usuario.class)

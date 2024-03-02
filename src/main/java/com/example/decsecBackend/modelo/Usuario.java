@@ -37,6 +37,7 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(unique = true)
 	private String nick;
 
 	private String nombre;
@@ -65,6 +66,11 @@ public class Usuario implements UserDetails {
 	@ElementCollection(fetch = FetchType.LAZY, targetClass = Publicacion.class)
 	@JsonBackReference
 	private List<Publicacion> publicaciones = new ArrayList<>();
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ElementCollection(fetch = FetchType.LAZY, targetClass = Comentario.class)
+	@JsonBackReference
+	private List<Comentario> comentarios = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
