@@ -1,9 +1,9 @@
 package com.example.decsecBackend.servicios;
 
 import java.util.List;
-import java.util.Map;
 
 import com.example.decsecBackend.dtos.ComentarioDTO;
+import com.example.decsecBackend.modelo.Comentario;
 
 public interface ComentarioServicio {
 
@@ -13,10 +13,10 @@ public interface ComentarioServicio {
 
     List<ComentarioDTO> listarMisComentarios(String email);
 
-    ComentarioDTO crearComentario(Map<String, Object> datos, String emailUsuario, Long idPubli);
+    ComentarioDTO crearComentario(Comentario comentario, String emailUsuario, Long idPubli);
 
-    ComentarioDTO actualizarComentario(Map<String, Object> datos, Long idComentario);
+    ComentarioDTO actualizarComentario(String nuevoComentario, Long idComentario);
 
-    ComentarioDTO borrarComentario(Long idComentario);
+    void borrarComentario(Long idComentario);
 
 }

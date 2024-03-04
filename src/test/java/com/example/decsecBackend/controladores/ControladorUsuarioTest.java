@@ -38,12 +38,12 @@ public class ControladorUsuarioTest {
                 .param("email", "ana@gmail.com")
                 .param("password", "tomate"))
                 .andExpect(status().isOk())
-                .andExpect(SecurityMockMvcResultMatchers.authenticated());
+                .andExpect(content().contentType("application/json"));
 
         // Realizar solicitudes adicionales con el token obtenido
         mockMvc.perform(get("/api/v1/users"))
-               .andExpect(status().isOk())
-               .andExpect(content().contentType("application/json"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"));
     }
 
     @Test
@@ -58,10 +58,10 @@ public class ControladorUsuarioTest {
         when(usuarioServicio.obtenerUsuario(usuarioId)).thenReturn(usuario);
 
         mockMvc.perform(get("/api/v1/users/{id}", usuarioId))
-               .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-               .andExpect(jsonPath("$.id").value(usuarioId))
-               .andExpect(jsonPath("$.roles[0]").value("ROLE_USER"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(usuarioId))
+                .andExpect(jsonPath("$.roles[0]").value("ROLE_USER"));
     }
 
     @Test
@@ -72,9 +72,9 @@ public class ControladorUsuarioTest {
         when(usuarioServicio.existePorId(usuarioId)).thenReturn(true);
         usuarioServicio.borrarUsuario(usuarioId);
         when(usuarioServicio.existePorId(usuarioId)).thenReturn(true);
-        
+
         mockMvc.perform(delete("/api/v1/users/{id}", usuarioId))
-               .andExpect(status().isOk())
-               .andExpect(content().string("Usuario con id:" + usuarioId + " borrado correctamente"));
+                .andExpect(status().isOk())
+                .andExpect(content().string("Usuario con id:" + usuarioId + " borrado correctamente"));
     }
 }

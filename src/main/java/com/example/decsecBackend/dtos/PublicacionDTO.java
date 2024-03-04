@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import com.example.decsecBackend.modelo.Publicacion;
 
-import jakarta.persistence.Lob;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -14,6 +12,8 @@ import lombok.Data;
 
 @Data
 public class PublicacionDTO {
+
+    private Long id;
 
     private byte[] foto;
 
@@ -26,6 +26,7 @@ public class PublicacionDTO {
     private String emailUsuario;
 
     public PublicacionDTO(Publicacion publi) {
+        this.id = publi.getId();
         this.foto = publi.getFoto();
         this.comentarioUsuario = publi.getComentarioUsuario();
         this.megusta = publi.getMegusta();

@@ -1,14 +1,19 @@
 package com.example.decsecBackend.serviciosImpl;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.decsecBackend.dtos.ComentarioDTO;
+import com.example.decsecBackend.errores.NotFoundException;
+import com.example.decsecBackend.modelo.Comentario;
+import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.repositorios.ComentarioRepositorio;
+import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.servicios.ComentarioServicio;
+import com.example.decsecBackend.servicios.UsuarioServicio;
 
 @Service
 public class ComentarioServicioImpl implements ComentarioServicio {
@@ -16,40 +21,60 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     @Autowired
     private ComentarioRepositorio repositorioComentario;
 
-    @Override
-    public List<ComentarioDTO> listarComentarios() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarComentarios'");
-    }
+    @Autowired
+    private PublicacionRepositorio repositorioPublicacion;
+
+    @Autowired
+    private UsuarioServicio servicioUsuario;
+
+    @Autowired
 
     @Override
+    public List<ComentarioDTO> listarComentarios() {
+        return repositorioComentario.findAll().stream()
+                .map(comentario -> new ComentarioDTO(comentario))
+                .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("null")
+    @Override
     public List<ComentarioDTO> listarComentariosPublicacion(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarComentariosPublicacion'");
+        Publicacion publi = repositorioPublicacion.findById(id)
+                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
+        return publi.getComentarios().stream()
+                .map(comentario -> new ComentarioDTO(comentario))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ComentarioDTO> listarMisComentarios(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarMisComentarios'");
+        return servicioUsuario.encontrarPorEmail(email).getComentarios().stream()
+                .map(comentario -> new ComentarioDTO(comentario))
+                .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("null")
     @Override
-    public ComentarioDTO crearComentario(Map<String, Object> datos, String emailUsuario, Long idPubli) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'crearComentario'");
+    public ComentarioDTO crearComentario(Comentario comentario, String emailUsuario, Long idPubli) {
+        comentario.setUsuario(servicioUsuario.encontrarPorEmail(emailUsuario));
+        comentario.setPublicacion(repositorioPublicacion.findById(idPubli)
+                .orElseThrow(() -> new NotFoundException("Publicacion no encontrada")));
+        return new ComentarioDTO(repositorioComentario.save(comentario));
     }
 
+    @SuppressWarnings("null")
     @Override
-    public ComentarioDTO actualizarComentario(Map<String, Object> datos, Long idComentario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actualizarComentario'");
+    public ComentarioDTO actualizarComentario(String nuevoComentario, Long idComentario) {
+        Comentario coment = repositorioComentario.findById(idComentario)
+                .orElseThrow(() -> new NotFoundException("Comentario no encontrado"));
+        coment.setComentario(nuevoComentario);
+        return new ComentarioDTO(repositorioComentario.save(coment));
     }
 
+    @SuppressWarnings("null")
     @Override
-    public ComentarioDTO borrarComentario(Long idComentario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'borrarComentario'");
+    public void borrarComentario(Long idComentario) {
+        repositorioComentario.deleteById(idComentario);
     }
 
 }

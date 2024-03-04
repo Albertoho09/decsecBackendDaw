@@ -2,7 +2,6 @@ package com.example.decsecBackend.controladores;
 
 import java.util.Map;
 
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.PublicacionServicioImpl;
@@ -69,10 +66,12 @@ public class PublicacionController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> crearPublicacion(@RequestBody Map<String, Object> datos, @AuthenticationPrincipal Usuario usuario) {
+    public ResponseEntity<?> crearPublicacion(@RequestBody Map<String, Object> datos,
+            @AuthenticationPrincipal Usuario usuario) {
         try {
             logger.info("##### CREANDO PUBLICACION (USUARIO) #####");
-            return ResponseEntity.status(HttpStatus.CREATED).body(publicacionService.crearPublicacion(datos, usuario.getEmail()));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(publicacionService.crearPublicacion(datos, usuario.getEmail()));
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("##### CREACION DE PUBLICACION FALLIDO (USUARIO) #####");
