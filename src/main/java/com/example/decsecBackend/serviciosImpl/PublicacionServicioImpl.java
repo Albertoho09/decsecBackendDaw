@@ -14,7 +14,10 @@ import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.servicios.PublicacionServicio;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class PublicacionServicioImpl implements PublicacionServicio {
 
     @Autowired
@@ -61,7 +64,8 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @SuppressWarnings("null")
     @Override
     public void borrarPublicacion(Long id) {
-        repositorioPublicacion.deleteById(id);
+        Publicacion publi = repositorioPublicacion.findById(id).orElseThrow(() -> new NotFoundException("Publicacion no encontrada"));
+        repositorioPublicacion.delete(publi);
     }
 
     @SuppressWarnings("null")

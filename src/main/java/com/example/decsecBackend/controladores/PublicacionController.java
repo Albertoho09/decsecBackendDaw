@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.decsecBackend.errores.NotFoundException;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.PublicacionServicioImpl;
@@ -93,4 +95,41 @@ public class PublicacionController {
         }
 
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
+    public ResponseEntity<?> borrarPublicacion(@PathVariable(required = true) Long id,
+            @AuthenticationPrincipal Usuario usuario) {
+        try {
+            if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
+                publicacionService.borrarPublicacion(id);
+                return ResponseEntity.status(HttpStatus.OK).body("Publicacion borrada exitosamente");
+            } else {
+                if (publicacionService.pertenecePublicacion(id, usuario.getEmail())) {
+                    publicacionService.borrarPublicacion(id);
+                    return ResponseEntity.status(HttpStatus.OK).body("Publicacion borrada exitosamente");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("La publicacion no te pertence");
+                }
+            }
+
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La publicacion no existe");
+        }
+    }
+
+    @PostMapping("darmegusta/{id}")
+    public ResponseEntity<?> darMegusta(@PathVariable(required = true) Long id,
+            @AuthenticationPrincipal Usuario usuario) {
+                publicacionService.megusta(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Has indicado que te gusta la publicacion");
+    }
+
+    @PostMapping("quitarmegusta/{id}")
+    public ResponseEntity<?> quitarMegusta(@PathVariable(required = true) Long id,
+            @AuthenticationPrincipal Usuario usuario) {
+                publicacionService.noMegusta(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Has indicado que no te gusta la publicacion");
+    }
+
 }

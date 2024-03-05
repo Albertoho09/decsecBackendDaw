@@ -10,7 +10,6 @@ import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.repositorios.PublicacionRepositorio;
 import com.example.decsecBackend.modelo.Publicacion;
 import com.example.decsecBackend.modelo.Role;
-import com.example.decsecBackend.serviciosImpl.PublicacionServicioImpl;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
 
 @Component

@@ -46,6 +46,7 @@ class PublicacionTest {
         publicacionRepositorio.save(publicacion);
 
         // Recuperar la publicación de la base de datos
+        @SuppressWarnings("null")
         Publicacion publicacionCreada = publicacionRepositorio.findById(publicacion.getId()).orElse(null);
 
         // Verificar que la publicación se haya creado correctamente
@@ -80,6 +81,7 @@ class PublicacionTest {
         publicacionRepositorio.save(publicacion);
 
         // Recuperar la publicación después de la modificación
+        @SuppressWarnings("null")
         Publicacion publicacionModificada = publicacionRepositorio.findById(publicacion.getId()).orElse(null);
 
         // Verificar que la publicación se haya modificado correctamente
@@ -88,6 +90,7 @@ class PublicacionTest {
         // Otras verificaciones...
     }
 
+    @SuppressWarnings("null")
     @Test
     void testBorrarPublicacion() {
         // Crear un usuario de prueba

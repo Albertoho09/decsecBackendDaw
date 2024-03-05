@@ -19,4 +19,6 @@ public interface ComentarioServicio {
 
     void borrarComentario(Long idComentario);
 
+    public boolean comentarioPerteneceAUsuario(Long IdComentario, String email);
+
 }

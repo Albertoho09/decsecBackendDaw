@@ -92,6 +92,7 @@ class UsuarioTest {
         // Otras verificaciones...
     }
 
+    @SuppressWarnings("null")
     @Test
     void testBorrarUsuario() {
         // Crear un usuario de prueba

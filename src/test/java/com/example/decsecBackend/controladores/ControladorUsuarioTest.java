@@ -3,15 +3,12 @@ package com.example.decsecBackend.controladores;
 import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.UsuarioServicioImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
@@ -24,9 +21,6 @@ public class ControladorUsuarioTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private UsuarioServicioImpl usuarioServicio;
@@ -46,6 +40,7 @@ public class ControladorUsuarioTest {
                 .andExpect(content().contentType("application/json"));
     }
 
+    @SuppressWarnings("null")
     @Test
     @WithMockUser(roles = "USER")
     void testListarUsuariosPorId() throws Exception {

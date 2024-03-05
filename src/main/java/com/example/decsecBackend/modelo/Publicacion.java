@@ -3,13 +3,8 @@ package com.example.decsecBackend.modelo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;

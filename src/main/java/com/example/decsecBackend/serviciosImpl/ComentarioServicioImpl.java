@@ -77,4 +77,11 @@ public class ComentarioServicioImpl implements ComentarioServicio {
         repositorioComentario.deleteById(idComentario);
     }
 
+    @SuppressWarnings("null")
+    @Override
+    public boolean comentarioPerteneceAUsuario(Long IdComentario, String email) {
+    Comentario comentario = repositorioComentario.findById(IdComentario).orElseThrow(() -> new NotFoundException("Comentario no encontrado"));
+    return comentario.getUsuario().equals(servicioUsuario.encontrarPorEmail(email));
+}
+
 }
