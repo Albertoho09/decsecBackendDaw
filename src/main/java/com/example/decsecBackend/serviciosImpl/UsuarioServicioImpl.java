@@ -75,7 +75,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 				.orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	public Boolean existePorId(Long id) {
 		return repositorio.existsById(id);
