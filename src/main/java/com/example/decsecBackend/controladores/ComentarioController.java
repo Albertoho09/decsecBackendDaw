@@ -15,6 +15,7 @@ import com.example.decsecBackend.modelo.Role;
 import com.example.decsecBackend.modelo.Usuario;
 import com.example.decsecBackend.serviciosImpl.ComentarioServicioImpl;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/comentarios")
+@CrossOrigin
 public class ComentarioController {
 
     @Autowired
@@ -60,11 +62,12 @@ public class ComentarioController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
     public ResponseEntity<?> actualizarComentario(@RequestBody ComentarioDTOrequest comentario,
-    @PathVariable(required = true) Long id, @AuthenticationPrincipal Usuario usuario) {
+            @PathVariable(required = true) Long id, @AuthenticationPrincipal Usuario usuario) {
         try {
             if (comentarioServicio.comentarioPerteneceAUsuario(id, usuario.getEmail())) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(comentarioServicio.actualizarComentario(comentario.getComentario(), id));
-            }else{
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(comentarioServicio.actualizarComentario(comentario.getComentario(), id));
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("El comentario no te pertence");
             }
         } catch (NotFoundException e) {
@@ -74,16 +77,17 @@ public class ComentarioController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
-    public ResponseEntity<?> borraComentario(@PathVariable(required = true)Long id, @AuthenticationPrincipal Usuario usuario) {
+    public ResponseEntity<?> borraComentario(@PathVariable(required = true) Long id,
+            @AuthenticationPrincipal Usuario usuario) {
         try {
             if (usuario.getRoles().contains(Role.ROLE_ADMIN)) {
                 comentarioServicio.borrarComentario(id);
                 return ResponseEntity.status(HttpStatus.CREATED).body("Comentario borrado");
-            }else{
+            } else {
                 if (comentarioServicio.comentarioPerteneceAUsuario(id, usuario.getEmail())) {
                     comentarioServicio.borrarComentario(id);
                     return ResponseEntity.status(HttpStatus.OK).body("Comentario borrado");
-                }else{
+                } else {
                     return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("El comentario no te pertence");
                 }
             }
